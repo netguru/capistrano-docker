@@ -1,3 +1,3 @@
 namespace :deploy do
-  after :updated, 'docker:release'
+  after :updated, 'docker:deploy'
 end
