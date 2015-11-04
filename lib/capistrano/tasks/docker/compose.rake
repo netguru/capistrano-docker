@@ -11,7 +11,7 @@ namespace :docker do
 
   namespace :deploy do
     task :compose do
-      %w( validate start ).each do |task|
+      %w( validate build start ).each do |task|
         invoke "docker:deploy:compose:#{task}"
       end
     end
@@ -22,6 +22,15 @@ namespace :docker do
           raise "missing #{env} environment variable" if ENV[env].nil?
         end
       end
+
+      task :build do
+        on roles(fetch(:docker_role)) do
+          within release_path do
+            execute :"docker-compose", compose_build_command
+          end
+        end
+      end
+      before :build, "docker:prepare_environment"
 
       task :start do
         on roles(fetch(:docker_role)) do
@@ -48,6 +57,13 @@ namespace :docker do
     cmd = ["up"]
     cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
     cmd << "-d"
+
+    cmd.join(" ")
+  end
+
+  def compose_build_command
+    cmd = ["build"]
+    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
 
     cmd.join(" ")
   end
