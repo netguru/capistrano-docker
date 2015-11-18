@@ -46,6 +46,7 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_image_full - name of the image with a tag, defaults to APPNAME_STAGE:REVISION
     set :docker_additional_options - additional options that will be passed to the 'docker run' command, defaults to none
     set :docker_copy_data - docker does not allow us to use symlinks so this is just a substitute for linked_files (and linked_dirs), however instead of linking it simply copy the contents, so these will be visible inside image
+    set :docker_apparmor_profile - run docker containers with specified apparmor profile
 
 
     set :docker_compose - should we use docker-compose strategy instead (note - all above options are obsolete using this option), using docker-compose requires you to have docker-compose.yml file in your root directory, defaults to false
@@ -73,3 +74,18 @@ Using docker-compose strategy is a bit smaller and easier, however I would not r
     2. it runs docker-compose up with project_name and detached options
 
 Docker-compose strategy is not stopping the containers automatically. You can use the "docker:compose:stop" task to do that (just remember that this will remove any compose-created containers unless you change the "docker_compose_remove_after_stop" option)
+
+
+### Changelog
+
+#### 0.2.3
+
+You can add a custom apparmor profile that will apply to running new containers by setting `docker_apparmor_profile` variable
+
+#### 0.2.2
+
+Docker compose now copies over `docker_copy_data` files to the release path before build
+
+#### 0.2.1
+
+Docker compose now always rebuilds images before running them
