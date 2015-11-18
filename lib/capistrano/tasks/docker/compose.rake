@@ -11,7 +11,7 @@ namespace :docker do
 
   namespace :deploy do
     task :compose do
-      %w( validate build start ).each do |task|
+      %w( validate prepare build start ).each do |task|
         invoke "docker:deploy:compose:#{task}"
       end
     end
@@ -21,6 +21,10 @@ namespace :docker do
         fetch(:docker_pass_env).each do |env|
           raise "missing #{env} environment variable" if ENV[env].nil?
         end
+      end
+
+      task :prepare do
+        invoke "docker:deploy:default:prepare"
       end
 
       task :build do
