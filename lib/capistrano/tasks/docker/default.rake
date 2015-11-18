@@ -96,6 +96,9 @@ namespace :docker do
       cmd << "--label=#{label}"  ## example: com.example.key=value
     end
 
+    # set custom apparmor profile
+    cmd << "--security-opt apparmor:#{fetch(:docker_apparmor_profile)}" unless fetch(:docker_apparmor_profile).nil?
+
     # attach revision label
     cmd << "--label=git.revision.id=#{fetch(:current_revision)}"
 

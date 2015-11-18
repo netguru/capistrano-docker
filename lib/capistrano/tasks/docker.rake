@@ -49,6 +49,7 @@ namespace :load do
     set :docker_labels,               -> { [] }
     set :docker_image,                -> { "#{fetch(:application)}_#{fetch(:stage)}" }
     set :docker_image_full,           -> { [fetch(:docker_image), fetch(:current_revision)].join(":") }
+    set :docker_apparmor_profile,     -> { nil }
     set :docker_additional_options,   -> { "" }
     set :docker_copy_data,            -> { [] }
     set :docker_pass_env,             -> { [] }
