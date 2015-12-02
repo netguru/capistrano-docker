@@ -30,6 +30,14 @@ If you want to deploy via docker strategy only on a specific stage, you can incl
 
 This will loadup docker tasks only in `staging` stage.
 
+There are additional tasks for assets and database migrations available
+These tasks runs one-time command in a seperate container, using configured links and volumes, so you can use these to precompile your assets into volume / run db migrations before running an actual app.
+(optionally) Add them in your capfile:
+
+    require 'capistrano/docker/assets'
+    require 'capistrano/docker/migration'
+
+
 Next, optionally, specify the options in your `config/stage/deploy.rb` file, however the defaults provided should work out-of-the-box.
 
     set :docker_current_container - the name of used container, defaults to: APPNAME_REVISION
@@ -53,6 +61,8 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_compose_project_name - prefix for the container names, defaults to nil, so it defaults to the directory name the project is at
     set :docker_compose_remove_after_stop - should we remove the containers after stopping them, defaults to true
     set :docker_pass_env - the list of the environment variables that should be passed over to the docker-compose commands from command line (they are validated wether they exists before they are used) (ex: PULL_REQUEST_ID=10 cap staging docker:compose:start )
+    set :docker_assets_precompile_command - command to be executed as assets precompile task (when capistrano/docker/assets is used, defaults to 'rake assets:precompile')
+    set :docker_migrate_command - command to be executed as migration task (when capistrano/docker/migration is used, defaults to 'rake db:migrate')
 
 The docker tasks will attach themselves just after default `deploy:updated` task from capistrano.
 
@@ -77,6 +87,17 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 
 ### Changelog
+
+#### 0.2.4
+
+Two new tasks added that can be ran just before running a container: assets:precompile and db:migrate
+Add to Capfile:
+
+    require 'capistrano/docker/assets' - for asset task
+    require 'capistrano/docker/migration' - for migration task
+
+See installation section for more info
+
 
 #### 0.2.3
 
