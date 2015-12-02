@@ -32,6 +32,30 @@ namespace :docker do
 
     cmd.join(" ")
   end
+
+  def task_command(command)
+    cmd = ["run"]
+
+    # attach volumes
+    fetch(:docker_volumes).each do |volume|
+      cmd << "-v #{volume}"
+    end
+
+    # attach links
+    fetch(:docker_links).each do |link|
+      cmd << "--link #{link}"
+    end
+
+    # set custom apparmor profile
+    cmd << "--security-opt apparmor:#{fetch(:docker_apparmor_profile)}" unless fetch(:docker_apparmor_profile).nil?
+
+    cmd << fetch(:docker_additional_options)
+    cmd << fetch(:docker_image_full)
+
+    cmd << command
+
+    cmd.join(" ")
+  end
 end
 
 namespace :load do
@@ -57,5 +81,11 @@ namespace :load do
     set :docker_compose,                    -> { false }
     set :docker_compose_project_name,       -> { nil }
     set :docker_compose_remove_after_stop,  -> { true }
+
+    # assets
+    set :docker_assets_precompile_command, -> { "rake assets:precompile" }
+
+    # migration
+    set :docker_migrate_command,           -> { "rake db:migrate" }
   end
 end
