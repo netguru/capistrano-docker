@@ -90,6 +90,14 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 ### Changelog
 
+#### 0.2.5
+
+Added two additional tasks which can be ran just before container. Add to Capfile:
+
+    require 'capistrano/docker/npm' - for running npm install
+    require 'capistrano/docker/bower' - for running bower install
+
+
 #### 0.2.4
 
 Two new tasks added that can be ran just before running a container: assets:precompile and db:migrate
