@@ -30,12 +30,12 @@ If you want to deploy via docker strategy only on a specific stage, you can incl
 
 This will loadup docker tasks only in `staging` stage.
 
-There are additional tasks for assets and database migrations available
-These tasks runs one-time command in a seperate container, using configured links and volumes, so you can use these to precompile your assets into volume / run db migrations before running an actual app.
-(optionally) Add them in your capfile:
+There are additional tasks available, which are run once in a seperate container, using configured links / volumes. The tasks are:
 
-    require 'capistrano/docker/assets'
-    require 'capistrano/docker/migration'
+    require 'capistrano/docker/assets' - precompile assets
+    require 'capistrano/docker/migration' - run db:migrate
+    require 'capistrano/docker/npm' - run npm install
+    require 'capistrano/docker/bower' - run bower install
 
 
 Next, optionally, specify the options in your `config/stage/deploy.rb` file, however the defaults provided should work out-of-the-box.
@@ -63,6 +63,8 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_pass_env - the list of the environment variables that should be passed over to the docker-compose commands from command line (they are validated wether they exists before they are used) (ex: PULL_REQUEST_ID=10 cap staging docker:compose:start )
     set :docker_assets_precompile_command - command to be executed as assets precompile task (when capistrano/docker/assets is used, defaults to 'rake assets:precompile')
     set :docker_migrate_command - command to be executed as migration task (when capistrano/docker/migration is used, defaults to 'rake db:migrate')
+    set :docker_npm_install_command - command to be executed for installing npm packages, defaults to 'npm install --production --no-spin'
+    set :docker_bower_install_command - command to be executed for intalling bower packages, defaults to 'bower install --production'
 
 The docker tasks will attach themselves just after default `deploy:updated` task from capistrano.
 
