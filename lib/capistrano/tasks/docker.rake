@@ -87,5 +87,11 @@ namespace :load do
 
     # migration
     set :docker_migrate_command,           -> { "rake db:migrate" }
+
+    # npm
+    set :docker_npm_install_command,       -> { "npm install --production --no-spin"}
+
+    # bower
+    set :docker_bower_install_command,     -> { "bower install --production" }
   end
 end
