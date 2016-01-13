@@ -96,6 +96,9 @@ namespace :docker do
       cmd << "--label=#{label}"  ## example: com.example.key=value
     end
 
+    # set cpu quota
+    cmd << "--cpu-quota #{fetch(:docker_cpu_quota)}" unless fetch(:docker_cpu_quota).nil?
+
     # set custom apparmor profile
     cmd << "--security-opt apparmor:#{fetch(:docker_apparmor_profile)}" unless fetch(:docker_apparmor_profile).nil?
 
