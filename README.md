@@ -92,6 +92,10 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 ### Changelog
 
+#### 0.2.7
+
+`#docker-compose` Added option to specify wether we want to remove associated volumes when stopping / removing docker-compose containers, defaults to true
+
 #### 0.2.6
 
 Added option to set cpu quota for containers (`:docker_cpu_quota`) - does not work with docker-compose
