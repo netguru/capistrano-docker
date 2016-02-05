@@ -54,6 +54,7 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_image_full - name of the image with a tag, defaults to APPNAME_STAGE:REVISION
     set :docker_additional_options - additional options that will be passed to the 'docker run' command, defaults to none
     set :docker_copy_data - docker does not allow us to use symlinks so this is just a substitute for linked_files (and linked_dirs), however instead of linking it simply copy the contents, so these will be visible inside image
+    set :docker_cpu_quota - specify the value for --cpu-quota option when running containers (does not work with docker-compose)
     set :docker_apparmor_profile - run docker containers with specified apparmor profile
 
 
@@ -89,6 +90,10 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 
 ### Changelog
+
+#### 0.2.6
+
+Added option to set cpu quota for containers (`:docker_cpu_quota`) - does not work with docker-compose
 
 #### 0.2.5
 
