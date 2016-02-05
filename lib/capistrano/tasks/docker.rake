@@ -82,6 +82,7 @@ namespace :load do
     set :docker_compose,                    -> { false }
     set :docker_compose_project_name,       -> { nil }
     set :docker_compose_remove_after_stop,  -> { true }
+    set :docker_compose_remove_volumes,     -> { true }
 
     # assets
     set :docker_assets_precompile_command, -> { "rake assets:precompile" }
