@@ -58,15 +58,16 @@ namespace :docker do
   end
 
   def compose_start_command
-    cmd = ["up"]
+    cmd = ["up", "-d"]
     cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
-    cmd << "-d"
+    cmd << fetch(:docker_compose_build_services) unless fetch(:docker_compose_build_services).nil?
 
     cmd.join(" ")
   end
 
   def compose_build_command
     cmd = ["build"]
+    cmd << fetch(:docker_compose_build_services) unless fetch(:docker_compose_build_services).nil?
     cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
 
     cmd.join(" ")

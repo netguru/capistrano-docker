@@ -62,6 +62,7 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_compose_project_name - prefix for the container names, defaults to nil, so it defaults to the directory name the project is at
     set :docker_compose_remove_after_stop - should we remove the containers after stopping them, defaults to true
     set :docker_compose_remove_volumes - should we remove associated volumes with containers during their removal (rm -v option), default: true
+    set :docker_compose_build_services - specify services which should be built / ran with docker-compose (ex. docker-compose build web), default: none
     set :docker_pass_env - the list of the environment variables that should be passed over to the docker-compose commands from command line (they are validated wether they exists before they are used) (ex: PULL_REQUEST_ID=10 cap staging docker:compose:start )
     set :docker_assets_precompile_command - command to be executed as assets precompile task (when capistrano/docker/assets is used, defaults to 'rake assets:precompile')
     set :docker_migrate_command - command to be executed as migration task (when capistrano/docker/migration is used, defaults to 'rake db:migrate')
@@ -91,6 +92,24 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 
 ### Changelog
+
+#### 0.2.8
+
+`#docker-compose` Added option to specify service name to be built / ran if docker-compose file contains multiple environments.
+For example if you have services like:
+```
+dev:
+    build: .
+    dockerfile: Dockerfile.dev
+    ...
+
+staging:
+    build: .
+    dockerfile: Dockerfile.staging
+    ...
+```
+
+and you want to "run" only `staging` service, then add to deploy option: `set :docker_compose_build_services, -> { "staging" }`
 
 #### 0.2.7
 
