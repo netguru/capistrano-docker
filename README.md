@@ -30,7 +30,7 @@ If you want to deploy via docker strategy only on a specific stage, you can incl
 
 This will loadup docker tasks only in `staging` stage.
 
-There are additional tasks available, which are run once in a seperate container, using configured links / volumes. The tasks are:
+There are additional tasks available, which are run once in a seperate container, using configured links / volumes. Add them to `Capfile` as well if you want to use them. The tasks are:
 
     require 'capistrano/docker/assets' - precompile assets
     require 'capistrano/docker/migration' - run db:migrate
