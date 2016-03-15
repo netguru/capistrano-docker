@@ -10,7 +10,7 @@ This gem allows you to easily deploy applications based on Docker images. It all
 To get started you need to have:
 
     1. A project with existing Dockerfile
-    2. A capistrano >= 3.2 version already hooked to your project
+    2. A capistrano >= 3.3 version already hooked to your project
 
 First - add following file to your gemfile:
 
