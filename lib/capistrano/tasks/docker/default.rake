@@ -1,7 +1,9 @@
 namespace :docker do
   namespace :deploy do
     task :default do
-      %w( prepare build run clean tag ).each do |task|
+      order = %w( prepare build run clean tag )
+      order = %w( prepare build clean run tag ) if fetch(:docker_clean_before_run)
+      order.each do |task|
         invoke "docker:deploy:default:#{task}"
       end
     end
