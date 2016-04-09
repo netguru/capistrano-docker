@@ -71,8 +71,7 @@ namespace :docker do
 
   def old_containers
     cmd = %(docker ps -f "name=#{fetch(:application)}_" --format '{{.ID}} {{.Image}} {{.Label "git.revision.id"}}' | grep "#{fetch(:docker_image)}")
-    found = capture(cmd)
-    found.split("\n").map { |x| x.split(" ") } if (found)
+    capture(cmd).split("\n").map { |x| x.split(" ") }
   end
 
   def remove_container(container)
