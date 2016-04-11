@@ -91,6 +91,7 @@ namespace :load do
 
     # migration
     set :docker_migrate_command,           -> { "rake db:migrate" }
+    set :docker_db_create_command,         -> { "rake db:create" }
 
     # npm
     set :docker_npm_install_command,       -> { "npm install --production --no-spin"}

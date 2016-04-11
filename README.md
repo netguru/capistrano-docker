@@ -56,7 +56,8 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_copy_data - docker does not allow us to use symlinks so this is just a substitute for linked_files (and linked_dirs), however instead of linking it simply copy the contents, so these will be visible inside image
     set :docker_cpu_quota - specify the value for --cpu-quota option when running containers (does not work with docker-compose)
     set :docker_apparmor_profile - run docker containers with specified apparmor profile
-
+    set :docker_clean_before_run - stops and removes existing containers before running a new one (useful when running containers with -p option), defaults to false
+    
 
     set :docker_compose - should we use docker-compose strategy instead (note - all above options are obsolete using this option), using docker-compose requires you to have docker-compose.yml file in your root directory, defaults to false
     set :docker_compose_project_name - prefix for the container names, defaults to nil, so it defaults to the directory name the project is at
@@ -66,6 +67,7 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_pass_env - the list of the environment variables that should be passed over to the docker-compose commands from command line (they are validated wether they exists before they are used) (ex: PULL_REQUEST_ID=10 cap staging docker:compose:start )
     set :docker_assets_precompile_command - command to be executed as assets precompile task (when capistrano/docker/assets is used, defaults to 'rake assets:precompile')
     set :docker_migrate_command - command to be executed as migration task (when capistrano/docker/migration is used, defaults to 'rake db:migrate')
+    set :docker_db_create_command - command to be executed as database creation task (use for first run deployments, defaults to 'rake db:create')
     set :docker_npm_install_command - command to be executed for installing npm packages, defaults to 'npm install --production --no-spin'
     set :docker_bower_install_command - command to be executed for intalling bower packages, defaults to 'bower install --production'
 
