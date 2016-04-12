@@ -35,7 +35,10 @@ namespace :docker do
 
   def task_command(command)
     cmd = ["run"]
-
+    
+    # clean up temp volumes
+    cmd << "--rm"
+    
     # attach volumes
     fetch(:docker_volumes).each do |volume|
       cmd << "-v #{volume}"
