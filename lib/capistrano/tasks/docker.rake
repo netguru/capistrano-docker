@@ -35,7 +35,10 @@ namespace :docker do
 
   def task_command(command)
     cmd = ["run"]
-
+    
+    # clean up temp volumes
+    cmd << "--rm"
+    
     # attach volumes
     fetch(:docker_volumes).each do |volume|
       cmd << "-v #{volume}"
@@ -78,6 +81,7 @@ namespace :load do
     set :docker_copy_data,            -> { [] }
     set :docker_pass_env,             -> { [] }
     set :docker_cpu_quota,            -> { nil }
+    set :docker_clean_before_run,      -> { false }
 
     set :docker_compose,                    -> { false }
     set :docker_compose_project_name,       -> { nil }
@@ -90,6 +94,7 @@ namespace :load do
 
     # migration
     set :docker_migrate_command,           -> { "rake db:migrate" }
+    set :docker_db_create_command,         -> { "rake db:create" }
 
     # npm
     set :docker_npm_install_command,       -> { "npm install --production --no-spin"}

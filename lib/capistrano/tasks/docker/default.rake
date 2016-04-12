@@ -1,7 +1,9 @@
 namespace :docker do
   namespace :deploy do
     task :default do
-      %w( prepare build run clean tag ).each do |task|
+      order = %w( prepare build run clean tag )
+      order = %w( prepare build clean run tag ) if fetch(:docker_clean_before_run)
+      order.each do |task|
         invoke "docker:deploy:default:#{task}"
       end
     end
@@ -68,8 +70,9 @@ namespace :docker do
   end
 
   def old_containers
-    cmd = %(docker ps -f "name=#{fetch(:application)}_" --format '{{.ID}} {{.Image}} {{.Label "git.revision.id"}}' | grep "#{fetch(:docker_image)}")
-    capture(cmd).split("\n").map { |x| x.split(" ") }
+    cmd = %(docker ps -f "name=#{fetch(:application)}_" --format '{{.ID}} {{.Image}} {{.Label "git.revision.id"}}')
+    resp = capture(cmd).split("\n").map { |x| x.split(" ") }
+    resp.select { |a| a[1].index('#{fetch(:docker_image)}')}
   end
 
   def remove_container(container)
