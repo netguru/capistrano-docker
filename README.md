@@ -57,7 +57,6 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_cpu_quota - specify the value for --cpu-quota option when running containers (does not work with docker-compose)
     set :docker_apparmor_profile - run docker containers with specified apparmor profile
     set :docker_clean_before_run - stops and removes existing containers before running a new one (useful when running containers with -p option), defaults to false
-    
 
     set :docker_compose - should we use docker-compose strategy instead (note - all above options are obsolete using this option), using docker-compose requires you to have docker-compose.yml file in your root directory, defaults to false
     set :docker_compose_project_name - prefix for the container names, defaults to nil, so it defaults to the directory name the project is at
@@ -94,6 +93,10 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 
 ### Changelog
+
+#### 0.2.9
+
+Thanks to @JamesCarscadden you can specify you want to stop container before running new one (`docker_clean_before_run` option) and there is a new task `docker:migration:create` which will run `rake db:create` command (you can change it by changing `docker_db_create_command`)
 
 #### 0.2.8
 
