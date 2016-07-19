@@ -7,6 +7,10 @@ namespace :docker do
     task :stop do
       invoke "docker:deploy:compose:stop"
     end
+
+    task :down do
+      invoke "docker:deploy:compose:down"
+    end
   end
 
   namespace :deploy do
@@ -54,6 +58,15 @@ namespace :docker do
         end
       end
       before :stop, "docker:prepare_environment"
+
+      task :down do
+        on roles(fetch(:docker_role)) do
+          within release_path do
+            execute :"docker-compose", compose_down_command
+          end
+        end
+      end
+      before :down, "docker:prepare_environment"
     end
   end
 
@@ -85,6 +98,13 @@ namespace :docker do
     cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
     cmd << "-f"
     cmd << "-v" if fetch(:docker_compose_remove_volumes) == true
+
+    cmd.join(" ")
+  end
+
+  def compose_down_command
+    cmd = ["down"]
+    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
 
     cmd.join(" ")
   end
