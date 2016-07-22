@@ -82,8 +82,8 @@ namespace :docker do
   def compose_build_command
     cmd = ["build"]
     cmd << fetch(:docker_compose_build_services) unless fetch(:docker_compose_build_services).nil?
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
     cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
+    cmd.unshift("-f #{fetch(:docker_compose_path)}")
 
     cmd.join(" ")
   end
