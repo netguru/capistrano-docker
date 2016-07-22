@@ -80,6 +80,7 @@ namespace :load do
     set :docker_cpu_quota,            -> { nil }
     set :docker_clean_before_run,      -> { false }
 
+    set :docker_compose_path,               -> { "docker-compose.yml" }
     set :docker_compose,                    -> { false }
     set :docker_compose_project_name,       -> { nil }
     set :docker_compose_remove_after_stop,  -> { true }
