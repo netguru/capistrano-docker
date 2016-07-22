@@ -52,6 +52,7 @@ namespace :docker do
       task :stop do
         on roles(fetch(:docker_role)) do
           within release_path do
+            execute :"docker-compose", compose_stop_command
             execute :"docker-compose", compose_remove_command unless fetch(:docker_compose_remove_after_stop) == false
           end
         end
