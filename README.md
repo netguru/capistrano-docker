@@ -59,6 +59,7 @@ Next, optionally, specify the options in your `config/stage/deploy.rb` file, how
     set :docker_clean_before_run - stops and removes existing containers before running a new one (useful when running containers with -p option), defaults to false
 
     set :docker_compose - should we use docker-compose strategy instead (note - all above options are obsolete using this option), using docker-compose requires you to have docker-compose.yml file in your root directory, defaults to false
+    set :docker_compose_path -> specify the path to the docker-compose.yml (#5)
     set :docker_compose_project_name - prefix for the container names, defaults to nil, so it defaults to the directory name the project is at
     set :docker_compose_remove_after_stop - should we remove the containers after stopping them, defaults to true
     set :docker_compose_remove_volumes - should we remove associated volumes with containers during their removal (rm -v option), default: true
@@ -93,6 +94,12 @@ Docker-compose strategy is not stopping the containers automatically. You can us
 
 
 ### Changelog
+
+
+#### 0.2.10
+
+* New task available: `docker:deploy:compose:down` - it calls `docker-compose down`, not automated, but you can insert it manually, thanks @tcoenraad, see #4
+* New variable: `docker_compose_path` - allows you to specify the path to the docker-compose file (thx @Mossie93) see #5
 
 #### 0.2.9
 
