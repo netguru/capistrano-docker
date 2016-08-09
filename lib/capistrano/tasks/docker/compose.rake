@@ -111,4 +111,15 @@ namespace :docker do
     cmd.unshift("-f #{fetch(:docker_compose_path)}")
     cmd.join(" ")
   end
+
+  def compose_run_command(service, command)
+    cmd = ["run"]
+    cmd.unshift("-p #{fetch(:docker_compose_project_name)}")
+    cmd.unshift("-f #{fetch(:docker_compose_path)}")
+
+    cmd << service
+    cmd << command
+
+    cmd.join(" ")
+  end
 end
