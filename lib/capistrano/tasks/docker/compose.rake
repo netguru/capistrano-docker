@@ -70,35 +70,50 @@ namespace :docker do
     end
   end
 
+  def _compose_option_project_name
+    opt = fetch(:docker_compose_project_name)
+    opt.nil? ? "" : "-p #{opt}"
+  end
+
+  def _compose_option_compose_path
+    opt = Array(fetch(:docker_compose_path))
+    opt.empty? ? "" : "-f #{opt.join(" -f ")}"
+  end
+
+  def _compose_option_build_services
+    opt = fetch(:docker_compose_build_services)
+    opt.nil? ? "" : opt
+  end
+
   def compose_start_command
     cmd = ["up", "-d"]
-    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
-    cmd << fetch(:docker_compose_build_services) unless fetch(:docker_compose_build_services).nil?
+    cmd << _compose_option_build_services
+    cmd.unshift _compose_option_project_name
+    cmd.unshift _compose_option_compose_path
 
     cmd.join(" ")
   end
 
   def compose_build_command
     cmd = ["build"]
-    cmd << fetch(:docker_compose_build_services) unless fetch(:docker_compose_build_services).nil?
-    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
+    cmd << _compose_option_build_services
+    cmd.unshift _compose_option_project_name
+    cmd.unshift _compose_option_compose_path
 
     cmd.join(" ")
   end
 
   def compose_stop_command
     cmd = ["stop"]
-    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
+    cmd.unshift _compose_option_project_name
+    cmd.unshift _compose_option_compose_path
     cmd.join(" ")
   end
 
   def compose_remove_command
     cmd = ["rm"]
-    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
+    cmd.unshift _compose_option_project_name
+    cmd.unshift _compose_option_compose_path
     cmd << "-f"
     cmd << "-v" if fetch(:docker_compose_remove_volumes) == true
 
@@ -107,15 +122,15 @@ namespace :docker do
 
   def compose_down_command
     cmd = ["down"]
-    cmd.unshift("-p #{fetch(:docker_compose_project_name)}") unless fetch(:docker_compose_project_name).nil?
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
+    cmd.unshift _compose_option_project_name
+    cmd.unshift _compose_option_compose_path
     cmd.join(" ")
   end
 
   def compose_run_command(service, command)
     cmd = ["run"]
-    cmd.unshift("-p #{fetch(:docker_compose_project_name)}")
-    cmd.unshift("-f #{fetch(:docker_compose_path)}")
+    cmd.unshift _compose_option_project_name
+    cmd.unshift _compose_option_compose_path
 
     cmd << service
     cmd << command
